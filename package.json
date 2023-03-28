@@ -1,0 +1,15 @@
+{
+  "name": "angular-study-monorepo",
+  "author": "Tiago Vaz",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "start:my-first-app": "npm run start --workspace=my-first-app",
+    "start:data-binding": "npm run start --workspace=data-binding",
+    "start:recipe-book": "npm run start --workspace=recipe-book"
+  }
+}
