@@ -19,7 +19,11 @@
         </div>
       </ul>
       <p appBasicHighlight> Estilizado com um diretiva básica!</p>
-      <p appBetterHighlight> Estilizado com um diretiva com melhores práticas!</p>
+      <!-- <p appBetterHighlight [defaultColor]="'darkred'" [highlightColor]="'darkorange'">Teste</p> -->
+      <!-- OUtra maneira de aplicar -->
+      <!--[appBetterHighlight]="'darkorange'" -> passando um alias com o nome do seletor para o input (altera no ts) -->
+      <!--defaultColor="darkred" -> Só é possível quando a propriedade é do tipo string -->
+      <p [appBetterHighlight]="'darkorange'" defaultColor="darkred">Teste</p>
     </div>
   </div>
 </div>
