@@ -8,13 +8,13 @@ import { LoggingService } from '../logging.service';
   styleUrls: ['./new-account.component.css'],
 })
 export class NewAccountComponent {
-  constructor(
-    private loggingService: LoggingService,
-    private accountService: AccountService
-  ) {}
+  constructor(private accountService: AccountService) {
+    this.accountService.statusUpdated.subscribe((status) => {
+      alert(`New status: ${status}`);
+    });
+  }
 
   onCreateAccount(accountName: string, accountStatus: string) {
     this.accountService.addAccount(accountName, accountStatus);
-    // this.loggingService.logStatusChange(accountStatus);
   }
 }
