@@ -11,12 +11,32 @@
           </li>
         </div>
 
-        <div *ngIf="!onlyOdd">
+        <div *appUnless="onlyOdd">
           <li class="list-group-item" [ngClass]="{odd: even % 2 !== 0}"
             [ngStyle]="{backgroundColor: even % 2 !== 0 ? 'yellow' : 'transparent'}" *ngFor="let even of evenList">
             {{even}}
           </li>
         </div>
+
+        <!-- <div *ngIf="!onlyOdd">
+          <li class="list-group-item" [ngClass]="{odd: even % 2 !== 0}"
+            [ngStyle]="{backgroundColor: even % 2 !== 0 ? 'yellow' : 'transparent'}" *ngFor="let even of evenList">
+            {{even}}
+          </li>
+        </div> -->
+
+        <!-- Tem o mesmo efeito do bloco acima -->
+        <!-- Isso é o resultado do * que utilizamos no ngIf -->
+        <!-- Ela cria uma diretiva estrutural, a * é sugar sintaxe -->
+        <!-- <ng-template [ngIf]="!onlyOdd">
+          <div>
+            <li class="list-group-item" [ngClass]="{odd: even % 2 !== 0}"
+              [ngStyle]="{backgroundColor: even % 2 !== 0 ? 'yellow' : 'transparent'}" *ngFor="let even of evenList">
+              {{even}}
+            </li>
+          </div>
+        </ng-template> -->
+
       </ul>
       <p appBasicHighlight> Estilizado com um diretiva básica!</p>
       <!-- <p appBetterHighlight [defaultColor]="'darkred'" [highlightColor]="'darkorange'">Teste</p> -->
