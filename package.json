@@ -12,6 +12,7 @@
     "start:data-binding": "npm run start --workspace=data-binding",
     "start:recipe-book": "npm run start --workspace=recipe-book",
     "start:directives": "npm run start --workspace=directives",
-    "start:services": "npm run start --workspace=services"
+    "start:services": "npm run start --workspace=services",
+    "start:routes": "npm run start --workspace=routes"
   }
 }
