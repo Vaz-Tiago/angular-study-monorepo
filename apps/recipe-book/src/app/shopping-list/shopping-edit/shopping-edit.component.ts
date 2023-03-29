@@ -1,11 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { Ingredient } from 'src/app/shared/ingredient.model';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -16,15 +10,12 @@ export class ShoppingListEditComponent {
   @ViewChild('nameInput', { static: false }) nameInputRef: ElementRef;
   @ViewChild('amountInput', { static: false }) amountInputRef: ElementRef;
 
-  @Output() removeShoppingItem = new EventEmitter<string>();
-  @Output() newShoppingItem = new EventEmitter<Ingredient>();
+  constructor(private slService: ShoppingListService) {}
 
   onIngredientAdd() {
-    this.newShoppingItem.emit(
-      new Ingredient(
-        this.nameInputRef.nativeElement.value,
-        this.amountInputRef.nativeElement.value
-      )
+    this.slService.addIngredient(
+      this.nameInputRef.nativeElement.value,
+      this.amountInputRef.nativeElement.value
     );
   }
 
@@ -34,9 +25,6 @@ export class ShoppingListEditComponent {
   }
 
   onIngredienteRemove() {
-    if (this.nameInputRef.nativeElement.value === '') {
-      return alert('Necessário informar o item a ser removido');
-    }
-    this.removeShoppingItem.emit(this.nameInputRef.nativeElement.value);
+    this.slService.removeIngredient(this.nameInputRef.nativeElement.value);
   }
 }
