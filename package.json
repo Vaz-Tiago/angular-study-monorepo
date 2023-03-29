@@ -11,6 +11,7 @@
     "start:my-first-app": "npm run start --workspace=my-first-app",
     "start:data-binding": "npm run start --workspace=data-binding",
     "start:recipe-book": "npm run start --workspace=recipe-book",
-    "start:directives": "npm run start --workspace=directives"
+    "start:directives": "npm run start --workspace=directives",
+    "start:services": "npm run start --workspace=services"
   }
 }
