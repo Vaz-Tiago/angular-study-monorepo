@@ -10,4 +10,6 @@ export class AppComponent {
   evenList = [2, 4];
   oddList = [1, 3, 5];
   onlyOdd = false;
+
+  value = 5;
 }

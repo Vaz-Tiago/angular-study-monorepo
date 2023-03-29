@@ -44,6 +44,13 @@
       <!--[appBetterHighlight]="'darkorange'" -> passando um alias com o nome do seletor para o input (altera no ts) -->
       <!--defaultColor="darkred" -> Só é possível quando a propriedade é do tipo string -->
       <p [appBetterHighlight]="'darkorange'" defaultColor="darkred">Teste</p>
+
+      <div [ngSwitch]="value">
+        <p *ngSwitchCase="1">Value is 1</p>
+        <p *ngSwitchCase="3">Value is 3</p>
+        <p *ngSwitchCase="5">Value is 5</p>
+        <p *ngSwitchDefault>Value is Default</p>
+      </div>
     </div>
   </div>
 </div>
