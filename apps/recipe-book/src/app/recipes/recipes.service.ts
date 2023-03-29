@@ -1,13 +1,15 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Recipe } from './recipes.model';
 
+@Injectable()
 export class RecipeService {
   recipeSelected = new EventEmitter<Recipe>();
   private recipes: Recipe[] = [
     new Recipe(
       'X-Burger',
-      'Esse é burgão da massa',
+      'Esse é hamburger mais gostoso',
       'https://cdn.pigz.app/pigzapp/product/01FMTG35FMC7XB1GX6WGPH01BM.webp',
       [
         new Ingredient('Hamburger', 1),
@@ -17,7 +19,7 @@ export class RecipeService {
     ),
     new Recipe(
       'Cachorro Quente',
-      'Prensado sucesso',
+      'Prensado com sucesso',
       'https://kahdog.com.br/wp-content/uploads/2021/07/Fotos-Site-Kahdog20.jpg',
       [
         new Ingredient('Salsicha', 1),
@@ -27,7 +29,12 @@ export class RecipeService {
     ),
   ];
 
+  constructor(private slService: ShoppingListService) {}
   getRecipes() {
     return this.recipes.slice();
+  }
+
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
+    this.slService.addIngredientList(ingredients);
   }
 }

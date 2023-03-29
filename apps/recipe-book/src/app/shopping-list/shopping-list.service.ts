@@ -3,10 +3,7 @@ import { Ingredient } from '../shared/ingredient.model';
 
 export class ShoppingListService {
   ingredientsChanged = new EventEmitter<void>();
-  private ingredients = [
-    new Ingredient('Apples', 5),
-    new Ingredient('Bananas', 3),
-  ];
+  private ingredients: Ingredient[] = [];
 
   getIngredients() {
     return this.ingredients.slice();
@@ -19,6 +16,15 @@ export class ShoppingListService {
 
   removeIngredient(name: string) {
     this.ingredients = this.ingredients.filter((x) => x.name !== name);
+    this.ingredientsChanged.emit();
+  }
+
+  addIngredientList(ingredients: Ingredient[]) {
+    ingredients.forEach((item) => {
+      const index = this.ingredients.findIndex((x) => x.name === item.name);
+      if (index === -1) this.ingredients.push(item);
+      else this.ingredients[index].amount += item.amount;
+    });
     this.ingredientsChanged.emit();
   }
 }
