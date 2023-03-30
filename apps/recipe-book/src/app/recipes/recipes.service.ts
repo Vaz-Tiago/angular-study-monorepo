@@ -8,6 +8,7 @@ export class RecipeService {
   recipeSelected = new EventEmitter<Recipe>();
   private recipes: Recipe[] = [
     new Recipe(
+      1,
       'X-Burger',
       'Esse é hamburger mais gostoso',
       'https://cdn.pigz.app/pigzapp/product/01FMTG35FMC7XB1GX6WGPH01BM.webp',
@@ -18,6 +19,7 @@ export class RecipeService {
       ]
     ),
     new Recipe(
+      2,
       'Cachorro Quente',
       'Prensado com sucesso',
       'https://kahdog.com.br/wp-content/uploads/2021/07/Fotos-Site-Kahdog20.jpg',
@@ -36,5 +38,9 @@ export class RecipeService {
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.slService.addIngredientList(ingredients);
+  }
+
+  getById(id: number): Recipe | undefined {
+    return this.recipes.find((x) => x.id === id);
   }
 }
