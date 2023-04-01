@@ -21,7 +21,7 @@ export class RecipeService {
       2,
       'Cachorro Quente',
       'Prensado com sucesso',
-      'https://kahdog.com.br/wp-content/uploads/2021/07/Fotos-Site-Kahdog20.jpg',
+      'https://cozinhasimples.com.br/wp-content/uploads/cachorro-quente-cozinha-simples-780x470.jpg',
       [
         new Ingredient('Salsicha', 1),
         new Ingredient('Pão', 1),
