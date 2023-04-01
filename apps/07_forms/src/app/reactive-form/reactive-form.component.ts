@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reactive-form',
@@ -17,7 +17,18 @@ export class ReactiveFormComponent implements OnInit {
         email: new FormControl(null, [Validators.required, Validators.email]),
       }),
       gender: new FormControl('male'),
+      hobbies: new FormArray([]),
     });
+  }
+
+  onAddHobby() {
+    const control = new FormControl(null, Validators.required);
+    const hobbyList = this.signupForm.get('hobbies') as FormArray;
+    hobbyList.push(control);
+  }
+
+  getHobbyList() {
+    return (this.signupForm.get('hobbies') as FormArray).controls;
   }
 
   onSubmit() {

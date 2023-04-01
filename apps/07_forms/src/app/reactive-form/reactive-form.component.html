@@ -18,15 +18,29 @@
             </span>
           </div>
         </div>
-        <div class="radio" *ngFor="let gender of genders">
+        <div class="radio-inline" *ngFor="let gender of genders">
           <label>
             <input type="radio" [value]="gender" formControlName="gender">{{ gender }}
           </label>
         </div>
-        <span *ngIf="signupForm.invalid && signupForm.touched" class="helper-block pull-right">
-          Please enter a valid data!
-        </span>
-        <button class="btn btn-primary" type="submit">Submit</button>
+
+        <hr>
+        <div formArrayName="hobbies" class="form-group">
+          <h4>Your Hobbies</h4>
+          <div class="form-group" *ngFor="let hc of getHobbyList(); let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">Add hobby</button>
+        </div>
+        <hr>
+
+        <div class="form-group">
+          <span *ngIf="signupForm.invalid && signupForm.touched" class="helper-block pull-right">
+            Please enter a valid data!
+          </span>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+
       </form>
     </div>
   </div>
