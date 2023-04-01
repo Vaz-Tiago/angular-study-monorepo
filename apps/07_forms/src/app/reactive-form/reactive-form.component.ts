@@ -31,6 +31,17 @@ export class ReactiveFormComponent implements OnInit {
 
     this.signupForm.valueChanges.subscribe((value) => console.debug(value));
     this.signupForm.statusChanges.subscribe((value) => console.debug(value));
+
+    this.signupForm.setValue({
+      userData: {
+        username: 'Tiago',
+        email: 'tiago@test.com',
+      },
+      gender: 'male',
+      hobbies: [],
+    });
+
+    this.signupForm.patchValue({ userData: { email: 'tiago.vaz@test.com' } });
   }
 
   onAddHobby() {
@@ -64,5 +75,6 @@ export class ReactiveFormComponent implements OnInit {
 
   onSubmit() {
     console.log(this.signupForm);
+    this.signupForm.reset();
   }
 }
