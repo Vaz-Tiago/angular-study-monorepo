@@ -38,3 +38,14 @@
     </div>
   </div>
 </div>
+<hr />
+<div class="row" *ngIf="submitted">
+  <div class="col-xs-12">
+    <h3>Your data</h3>
+    <p>Username: {{user.username}}</p>
+    <p>Email: {{user.mail}}</p>
+    <p>Secret: {{user.question}}</p>
+    <p>Answer: {{user.answer}}</p>
+    <p>Gender: {{user.gender}}</p>
+  </div>
+</div>
