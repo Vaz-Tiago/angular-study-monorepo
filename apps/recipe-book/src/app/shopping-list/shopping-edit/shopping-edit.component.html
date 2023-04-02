@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
-    <form (ngSubmit)="onAddItem(f)" #f="ngForm">
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
       <div class="row">
         <input type="hidden" id="id" class="form-control" name="id" ngModel />
         <div class="col-sm-5 form-group">
@@ -17,8 +17,9 @@
           <button class="btn btn-success" type="submit" [disabled]="f.invalid">
             {{editingMode ? 'Atualizar' :'Adicionar'}}
           </button>
-          <button class="btn btn-danger" type="button">Remover</button>
-          <button class="btn btn-primary" type="button">Limpar</button>
+          <button class="btn btn-danger" type="button" (click)="onIngredienteRemove()"
+            [disabled]="!editingMode">Remover</button>
+          <button class="btn btn-primary" type="button" (click)="onIngredientReset()">Limpar</button>
         </div>
       </div>
     </form>
