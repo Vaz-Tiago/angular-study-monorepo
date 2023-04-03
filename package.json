@@ -15,6 +15,7 @@
     "start:services": "npm run start --workspace=services",
     "start:routes": "npm run start --workspace=routes",
     "start:observables": "npm run start --workspace=observables",
-    "start:forms": "npm run start --workspace=forms"
+    "start:forms": "npm run start --workspace=forms",
+    "start:pipes": "npm run start --workspace=pipes"
   }
 }
