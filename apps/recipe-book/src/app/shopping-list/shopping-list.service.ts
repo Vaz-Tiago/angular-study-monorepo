@@ -5,7 +5,9 @@ import { Subject } from 'rxjs';
 export class ShoppingListService {
   ingredientsChanged = new Subject<void>();
   startEditing = new Subject<number>();
-  private ingredients: Ingredient[] = [];
+  private ingredients: Ingredient[] = [
+    new Ingredient(generateId(), 'teste', 10),
+  ];
 
   getIngredients() {
     return this.ingredients.slice();
