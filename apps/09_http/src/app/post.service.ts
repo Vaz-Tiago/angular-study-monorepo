@@ -1,20 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { map } from 'rxjs';
+import { Subject, map, catchError, throwError } from 'rxjs';
 
 @Injectable()
 export class PostService {
   private apiUrl = 'https://angular-study-request-default-rtdb.firebaseio.com';
+  public error = new Subject<string>();
 
   constructor(private http: HttpClient) {}
 
   createAndStorePost(title: string, content: string) {
     const payload: Post = { title, content };
-    return this.http.post<{ name: string }>(
-      `${this.apiUrl}/posts.json`,
-      payload
-    );
+    this.http
+      .post<{ name: string }>(`${this.apiUrl}/posts.json`, payload)
+      .subscribe({
+        next: (responseData) => console.log('responseData: ', responseData),
+        error: (error) => this.error.next(error.message),
+      });
   }
 
   deleteAllPosts() {
@@ -24,10 +27,10 @@ export class PostService {
   fetchPosts() {
     return this.http
       .get<{ [key: string]: Post }>(`${this.apiUrl}/posts.json`)
-      .pipe(map(this.formatPostData));
+      .pipe(map(this.pipeFormatPostData), catchError(this.pipeErrorHandler));
   }
 
-  private formatPostData(responseData: { [key: string]: Post }): Post[] {
+  private pipeFormatPostData(responseData: { [key: string]: Post }): Post[] {
     const postArray: Post[] = [];
     for (const key in responseData) {
       if (responseData.hasOwnProperty(key)) {
@@ -35,5 +38,10 @@ export class PostService {
       }
     }
     return postArray;
+  }
+
+  private pipeErrorHandler(error: any) {
+    console.log('ErrorHandler: ', error);
+    return throwError(() => new Error(error.message));
   }
 }
