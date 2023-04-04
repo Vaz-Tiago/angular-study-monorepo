@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     this.http
       .get<{ [key: string]: Post }>(`${this.apiUrl}/posts.json`)
       .pipe(map(this.formatPostData))
-      .subscribe((posts) => console.log(posts));
+      .subscribe((posts) => (this.loadedPosts = posts));
   }
 
   private formatPostData(responseData: { [key: string]: Post }): Post[] {
