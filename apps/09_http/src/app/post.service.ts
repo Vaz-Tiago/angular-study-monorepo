@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
 import { Subject, map, catchError, throwError } from 'rxjs';
@@ -25,8 +25,16 @@ export class PostService {
   }
 
   fetchPosts() {
+    const headers = new HttpHeaders({ 'Custom-Header': 'Hello' });
+    const params = new HttpParams()
+      .set('print', 'pretty')
+      .set('another', 'pretty');
+
     return this.http
-      .get<{ [key: string]: Post }>(`${this.apiUrl}/posts.json`)
+      .get<{ [key: string]: Post }>(`${this.apiUrl}/posts.json`, {
+        headers,
+        params,
+      })
       .pipe(map(this.pipeFormatPostData), catchError(this.pipeErrorHandler));
   }
 
