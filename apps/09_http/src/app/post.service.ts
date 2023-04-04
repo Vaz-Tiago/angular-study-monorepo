@@ -52,6 +52,7 @@ export class PostService {
       .get<{ [key: string]: Post }>(`${this.apiUrl}/posts.json`, {
         headers,
         params,
+        responseType: 'json',
       })
       .pipe(map(this.pipeFormatPostData), catchError(this.pipeErrorHandler));
   }
