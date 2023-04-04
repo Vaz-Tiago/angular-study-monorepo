@@ -22,7 +22,6 @@ export class PostService {
         observe: 'response',
       })
       .subscribe({
-        next: (responseData) => console.log('responseData: ', responseData),
         error: (error) => this.error.next(error.message),
       });
   }
