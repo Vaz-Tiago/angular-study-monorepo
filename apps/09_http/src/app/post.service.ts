@@ -1,7 +1,12 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEventType,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
-import { Subject, map, catchError, throwError } from 'rxjs';
+import { Subject, map, catchError, throwError, tap } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -13,7 +18,9 @@ export class PostService {
   createAndStorePost(title: string, content: string) {
     const payload: Post = { title, content };
     this.http
-      .post<{ name: string }>(`${this.apiUrl}/posts.json`, payload)
+      .post<{ name: string }>(`${this.apiUrl}/posts.json`, payload, {
+        observe: 'response',
+      })
       .subscribe({
         next: (responseData) => console.log('responseData: ', responseData),
         error: (error) => this.error.next(error.message),
@@ -21,7 +28,18 @@ export class PostService {
   }
 
   deleteAllPosts() {
-    return this.http.delete(`${this.apiUrl}/posts.json`);
+    return this.http
+      .delete(`${this.apiUrl}/posts.json`, { observe: 'events' })
+      .pipe(
+        tap((event) => {
+          if (event.type === HttpEventType.Sent) {
+            console.log('HttpEventType.Sent', 'Sent, wait response');
+          }
+          if (event.type === HttpEventType.Response) {
+            console.log('HttpEventType.Response', event.body);
+          }
+        })
+      );
   }
 
   fetchPosts() {
