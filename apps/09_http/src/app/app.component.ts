@@ -11,6 +11,7 @@ import { Post } from './post.model';
 export class AppComponent implements OnInit {
   private apiUrl = 'https://angular-study-request-default-rtdb.firebaseio.com';
   loadedPosts = [];
+  isFetching = true;
 
   constructor(private http: HttpClient) {}
   ngOnInit(): void {
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
   onCreatePost(postData: Post) {
     this.http
       .post<{ name: string }>(`${this.apiUrl}/posts.json`, postData)
-      .subscribe((responseData) => console.log(responseData));
+      .subscribe(() => this.fetchPosts());
   }
 
   onFetchPosts() {
@@ -32,7 +33,10 @@ export class AppComponent implements OnInit {
     this.http
       .get<{ [key: string]: Post }>(`${this.apiUrl}/posts.json`)
       .pipe(map(this.formatPostData))
-      .subscribe((posts) => (this.loadedPosts = posts));
+      .subscribe((posts) => {
+        this.isFetching = false;
+        this.loadedPosts = posts;
+      });
   }
 
   private formatPostData(responseData: { [key: string]: Post }): Post[] {
