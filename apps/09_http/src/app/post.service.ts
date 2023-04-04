@@ -8,11 +8,17 @@ export class PostService {
   private apiUrl = 'https://angular-study-request-default-rtdb.firebaseio.com';
 
   constructor(private http: HttpClient) {}
+
   createAndStorePost(title: string, content: string) {
     const payload: Post = { title, content };
-    this.http
-      .post<{ name: string }>(`${this.apiUrl}/posts.json`, payload)
-      .subscribe((response) => console.log(response));
+    return this.http.post<{ name: string }>(
+      `${this.apiUrl}/posts.json`,
+      payload
+    );
+  }
+
+  deleteAllPosts() {
+    return this.http.delete(`${this.apiUrl}/posts.json`);
   }
 
   fetchPosts() {

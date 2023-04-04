@@ -19,7 +19,10 @@ export class AppComponent implements OnInit {
   }
 
   onCreatePost(postData: Post) {
-    this.postService.createAndStorePost(postData.title, postData.content);
+    this.isFetching = true;
+    this.postService
+      .createAndStorePost(postData.title, postData.content)
+      .subscribe(() => this.onFetchPosts());
   }
 
   onFetchPosts() {
@@ -28,5 +31,12 @@ export class AppComponent implements OnInit {
       .subscribe((posts) => (this.loadedPosts = posts));
     this.isFetching = false;
   }
-  onClearPosts() {}
+
+  onClearPosts() {
+    this.isFetching = true;
+    this.postService.deleteAllPosts().subscribe(() => {
+      this.loadedPosts = [];
+      this.isFetching = false;
+    });
+  }
 }
