@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 export interface AuthResponseData {
   kind: string;
@@ -20,7 +21,7 @@ export class AuthService {
   private signingURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`;
   user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   signUp(email: string, password: string) {
     const payload = {
@@ -49,6 +50,11 @@ export class AuthService {
         catchError(this.handleErrorResponse),
         tap(this.handleAuthentication.bind(this))
       );
+  }
+
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/login']);
   }
 
   private handleAuthentication(data: AuthResponseData) {
