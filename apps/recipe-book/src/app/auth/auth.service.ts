@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '../../environments/environment';
-import { catchError, throwError } from 'rxjs';
+import { Subject, catchError, tap, throwError } from 'rxjs';
+import { User } from './user.model';
 
 export interface AuthResponseData {
   kind: string;
@@ -18,6 +19,8 @@ export class AuthService {
   private signupURL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`;
   private signingURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`;
 
+  user = new Subject<User>();
+
   constructor(private http: HttpClient) {}
 
   signUp(email: string, password: string) {
@@ -29,7 +32,10 @@ export class AuthService {
 
     return this.http
       .post<AuthResponseData>(this.signupURL, payload)
-      .pipe(catchError(this.handleErrorResponse));
+      .pipe(
+        catchError(this.handleErrorResponse),
+        tap(this.handleAuthentication)
+      );
   }
 
   login(email: string, password: string) {
@@ -40,9 +46,19 @@ export class AuthService {
     };
     return this.http
       .post<AuthResponseData>(this.signingURL, payload)
-      .pipe(catchError(this.handleErrorResponse));
+      .pipe(
+        catchError(this.handleErrorResponse),
+        tap(this.handleAuthentication)
+      );
   }
 
+  private handleAuthentication(data: AuthResponseData) {
+    const { email, localId, idToken, expiresIn } = data;
+    const formattedExpire = new Date(new Date().getTime() + +expiresIn * 1000);
+    const user = new User(email, localId, idToken, formattedExpire);
+
+    this.user.next(user);
+  }
   private handleErrorResponse(err: any) {
     const errorMap = {
       EMAIL_EXISTS: 'Email em uso',
