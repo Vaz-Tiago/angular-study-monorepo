@@ -10,8 +10,10 @@
         <input type="password" id="password" class="form-control" />
       </div>
       <div class="buttons">
-        <button class="btn btn-primary">Cadastrar</button>
-        <button class="btn btn-primary" type="button">Alterar para Login</button>
+        <button class="btn btn-primary login-button" type="submit">{{isLoginMode ? 'Login' : 'Cadastrar'}}</button>
+        <button class="btn btn-default login-button" type="button" (click)="onSwitchMode()">
+          Alterar para {{isLoginMode ? 'Cadastro' : 'Login'}}
+        </button>
       </div>
     </form>
   </div>
