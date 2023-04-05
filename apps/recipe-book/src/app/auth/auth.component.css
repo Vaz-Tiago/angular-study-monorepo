@@ -6,3 +6,10 @@
 .login-button {
   min-width: 200px;
 }
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px;
+}
