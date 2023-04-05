@@ -22,6 +22,7 @@ import { ShoppingListEditComponent } from './shopping-list/shopping-edit/shoppin
 import { RecipeService } from './recipes/recipes.service';
 import { DataStorageService } from './shared/data-storage.service';
 import { AuthComponent } from './auth/auth.component';
+import { LoaderSpinComponent } from './shared/loader-spin/loader-spin.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { AuthComponent } from './auth/auth.component';
     RecipeStartComponent,
     RecipeEditComponent,
     AuthComponent,
+    LoaderSpinComponent,
   ],
   imports: [
     BrowserModule,
