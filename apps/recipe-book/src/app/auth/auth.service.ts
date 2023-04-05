@@ -18,7 +18,6 @@ export interface AuthResponseData {
 export class AuthService {
   private signupURL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`;
   private signingURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`;
-
   user = new Subject<User>();
 
   constructor(private http: HttpClient) {}
@@ -34,7 +33,7 @@ export class AuthService {
       .post<AuthResponseData>(this.signupURL, payload)
       .pipe(
         catchError(this.handleErrorResponse),
-        tap(this.handleAuthentication)
+        tap(this.handleAuthentication.bind(this))
       );
   }
 
@@ -48,7 +47,7 @@ export class AuthService {
       .post<AuthResponseData>(this.signingURL, payload)
       .pipe(
         catchError(this.handleErrorResponse),
-        tap(this.handleAuthentication)
+        tap(this.handleAuthentication.bind(this))
       );
   }
 
@@ -59,6 +58,7 @@ export class AuthService {
 
     this.user.next(user);
   }
+
   private handleErrorResponse(err: any) {
     const errorMap = {
       EMAIL_EXISTS: 'Email em uso',

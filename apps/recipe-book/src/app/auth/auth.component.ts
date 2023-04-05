@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { AuthResponseData, AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 
+import { AuthResponseData, AuthService } from './auth.service';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -13,7 +14,7 @@ export class AuthComponent {
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -33,11 +34,19 @@ export class AuthComponent {
     }
 
     authObs.subscribe({
-      next: (resData) => console.debug(resData),
-      error: (errMessage) => (this.error = errMessage),
+      next: this.handleSuccess.bind(this),
+      error: this.handleError.bind(this),
     });
 
     form.reset();
     this.isLoading = false;
+  }
+
+  private handleSuccess(data: AuthResponseData) {
+    this.router.navigate(['/receitas']);
+  }
+
+  private handleError(errorMessage: string) {
+    this.error = errorMessage;
   }
 }
