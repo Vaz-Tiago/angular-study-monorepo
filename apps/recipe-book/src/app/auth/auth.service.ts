@@ -19,6 +19,8 @@ export interface AuthResponseData {
 export class AuthService {
   private signupURL = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`;
   private signingURL = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`;
+  private userStorageKey = 'userData';
+  private tokenExpirationTimer: any;
   user = new BehaviorSubject<User>(null);
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -54,7 +56,34 @@ export class AuthService {
 
   logout() {
     this.user.next(null);
+    localStorage.removeItem(this.userStorageKey);
+    if (this.tokenExpirationTimer) clearTimeout(this.tokenExpirationTimer);
     this.router.navigate(['/login']);
+  }
+
+  autoLogin() {
+    const userData = JSON.parse(localStorage.getItem(this.userStorageKey));
+    if (!userData) return;
+
+    const loadedUser = new User(
+      userData.email,
+      userData.id,
+      userData._token,
+      userData._tokenExpirationDate
+    );
+
+    if (!loadedUser.token) return;
+
+    this.user.next(loadedUser);
+    const expirationDuration =
+      new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+    this.autoLogout(expirationDuration);
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   private handleAuthentication(data: AuthResponseData) {
@@ -63,6 +92,8 @@ export class AuthService {
     const user = new User(email, localId, idToken, formattedExpire);
 
     this.user.next(user);
+    this.autoLogout(+expiresIn * 1000);
+    localStorage.setItem(this.userStorageKey, JSON.stringify(user));
   }
 
   private handleErrorResponse(err: any) {
