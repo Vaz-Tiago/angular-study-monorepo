@@ -14,8 +14,8 @@
         <li class="dropdown" appDropdown>
           <a class="dropdown-toggle" role="button">Ações <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a>Salvar</a></li>
-            <li><a>Sincronizar</a></li>
+            <li><a (click)="onSaveData()">Salvar</a></li>
+            <li><a (click)="onFetchData()">Sincronizar</a></li>
           </ul>
         </li>
       </ul>

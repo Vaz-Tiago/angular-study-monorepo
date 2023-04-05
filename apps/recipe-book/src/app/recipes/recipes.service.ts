@@ -8,30 +8,31 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class RecipeService {
   isRecipeChange = new Subject<void>();
-  private recipes: Recipe[] = [
-    new Recipe(
-      1,
-      'X-Burger',
-      'Esse é hamburger mais gostoso',
-      'https://cdn.pigz.app/pigzapp/product/01FMTG35FMC7XB1GX6WGPH01BM.webp',
-      [
-        new Ingredient(generateId(), 'Hamburger', 1),
-        new Ingredient(generateId(), 'Queijo', 2),
-        new Ingredient(generateId(), 'Batatas fritas', 20),
-      ]
-    ),
-    new Recipe(
-      2,
-      'Cachorro Quente',
-      'Prensado com sucesso',
-      'https://cozinhasimples.com.br/wp-content/uploads/cachorro-quente-cozinha-simples-780x470.jpg',
-      [
-        new Ingredient(generateId(), 'Salsicha', 1),
-        new Ingredient(generateId(), 'Pão', 1),
-        new Ingredient(generateId(), 'Batata palha', 50),
-      ]
-    ),
-  ];
+  private recipes: Recipe[] = [];
+  // [
+  //   new Recipe(
+  //     1,
+  //     'X-Burger',
+  //     'Esse é hamburger mais gostoso',
+  //     'https://cdn.pigz.app/pigzapp/product/01FMTG35FMC7XB1GX6WGPH01BM.webp',
+  //     [
+  //       new Ingredient(generateId(), 'Hamburger', 1),
+  //       new Ingredient(generateId(), 'Queijo', 2),
+  //       new Ingredient(generateId(), 'Batatas fritas', 20),
+  //     ]
+  //   ),
+  //   new Recipe(
+  //     2,
+  //     'Cachorro Quente',
+  //     'Prensado com sucesso',
+  //     'https://cozinhasimples.com.br/wp-content/uploads/cachorro-quente-cozinha-simples-780x470.jpg',
+  //     [
+  //       new Ingredient(generateId(), 'Salsicha', 1),
+  //       new Ingredient(generateId(), 'Pão', 1),
+  //       new Ingredient(generateId(), 'Batata palha', 50),
+  //     ]
+  //   ),
+  // ];
 
   constructor(private slService: ShoppingListService) {}
   getRecipes() {
@@ -95,6 +96,11 @@ export class RecipeService {
 
   removeRecipe(id: number) {
     this.recipes = this.recipes.filter((x) => x.id !== id);
+    this.isRecipeChange.next();
+  }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
     this.isRecipeChange.next();
   }
 }
