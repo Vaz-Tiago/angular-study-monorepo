@@ -1,8 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RecipeService } from '../recipes/recipes.service';
 import { Recipe } from '../recipes/recipes.model';
-import { map, tap } from 'rxjs';
+import { exhaustMap, map, take, tap } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 
 @Injectable()
 export class DataStorageService {
@@ -18,18 +20,24 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    return this.http.get<Recipe[]>(this.storeRecipeUrl).pipe(
-      map((recipes) => {
-        return recipes.map((item) => {
-          return {
-            ...item,
-            ingredients: item?.ingredients || [],
-          };
-        });
-      }),
-      tap((resData) => {
-        this.recipeService.setRecipes(resData);
-      })
-    );
+    return this.http
+      .get<Recipe[]>(this.storeRecipeUrl)
+      .pipe(
+        map(this.formatRecipeResponse),
+        tap(this.setFetchedRecipes.bind(this))
+      );
+  }
+
+  private formatRecipeResponse(recipes: Recipe[]): Recipe[] {
+    return recipes.map((item) => {
+      return {
+        ...item,
+        ingredients: item?.ingredients || [],
+      };
+    });
+  }
+
+  private setFetchedRecipes(recipes: Recipe[]) {
+    this.recipeService.setRecipes(recipes);
   }
 }
